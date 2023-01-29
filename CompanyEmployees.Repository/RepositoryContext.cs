@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyEmployees.Repository
 {
+
     public class RepositoryContext : DbContext
     {
         public RepositoryContext(DbContextOptions options)
