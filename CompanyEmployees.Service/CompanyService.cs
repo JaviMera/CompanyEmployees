@@ -1,4 +1,5 @@
 ﻿using CompanyEmployees.Contracts;
+using CompanyEmployees.Entities.Models;
 using CompanyEmployees.Service.Contracts;
 
 namespace CompanyEmployees.Service
@@ -12,6 +13,19 @@ namespace CompanyEmployees.Service
         {
             _repositoryManager = repositoryManager;
             _loggerManager = loggerManager;
+        }
+
+        public IEnumerable<Company> GetAllCompanies(bool trackChanges)
+        {
+            try
+            {
+                return _repositoryManager.Company.GetAllCompanies(trackChanges);
+            }
+            catch (Exception exception)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetAllCompanies)} service method {exception}");
+                throw;
+            }
         }
     }
 }

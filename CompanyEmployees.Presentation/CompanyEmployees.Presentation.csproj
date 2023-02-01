@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CompanyEmployees.Entities\CompanyEmployees.Entities.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyEmployees.Service.Contracts\CompanyEmployees.Service.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
