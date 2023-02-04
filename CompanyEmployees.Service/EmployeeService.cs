@@ -1,4 +1,5 @@
-﻿using CompanyEmployees.Contracts;
+﻿using AutoMapper;
+using CompanyEmployees.Contracts;
 using CompanyEmployees.Service.Contracts;
 
 namespace CompanyEmployees.Service
@@ -7,11 +8,13 @@ namespace CompanyEmployees.Service
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly ILoggerManager _loggerManager;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IRepositoryManager repositoryManager, ILoggerManager loggerManager)
+        public EmployeeService(IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
             _loggerManager = loggerManager;
+            _mapper = mapper;
         }
     }
 }
