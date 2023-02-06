@@ -8,5 +8,12 @@ namespace CompanyEmployees.Repository
         public EmployeeRepository(RepositoryContext context) : base(context)
         {
         }
+
+        public IEnumerable<Employee> GetEmployees(Guid companyId, bool trackChanges)
+        {
+            return FindByCondition(employee => employee.CompanyId.Equals(companyId), trackChanges)
+                .OrderBy(employee => employee.Name)
+                .ToList();
+        }
     }
 }
