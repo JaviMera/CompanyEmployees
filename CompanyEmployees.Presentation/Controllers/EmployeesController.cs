@@ -11,7 +11,7 @@ namespace CompanyEmployees.Presentation.Controllers
 
         public EmployeesController(IServiceManager serviceManager)
         {
-            _service= serviceManager;
+            _service = serviceManager;
         }
 
         [HttpGet]
@@ -20,6 +20,15 @@ namespace CompanyEmployees.Presentation.Controllers
             var employees = _service.EmployeeService.GetEmployees(companyId, trackChanges: false);
 
             return Ok(employees);
+        }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        public IActionResult GetEmployeeForCompany(Guid companyId, Guid id)
+        {
+            var employee = _service.EmployeeService.GetComployee(companyId, id, trackChanges: false);
+
+            return Ok(employee);
         }
     }
 }
