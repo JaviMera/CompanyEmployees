@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CompanyEmployees.Contracts;
 using CompanyEmployees.Entities.Exceptions;
+using CompanyEmployees.Entities.Models;
 using CompanyEmployees.Service.Contracts;
 using CompanyEmployees.Shared.DataTransferObjects;
 
@@ -17,6 +18,15 @@ namespace CompanyEmployees.Service
             _repositoryManager = repositoryManager;
             _loggerManager = loggerManager;
             _mapper = mapper;
+        }
+
+        public CompanyDto CreateCompany(CompanyForCreationDto company)
+        {
+            var companyEntity = _mapper.Map<Company>(company);
+            _repositoryManager.Company.CreateCompany(companyEntity);
+            _repositoryManager.Save();
+
+            return _mapper.Map<CompanyDto>(companyEntity);
         }
 
         public IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges)

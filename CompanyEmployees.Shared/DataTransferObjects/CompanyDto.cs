@@ -1,5 +1,5 @@
 ﻿namespace CompanyEmployees.Shared.DataTransferObjects
-{    
+{
     public record CompanyDto
     {
         public Guid Id { get; set; }
