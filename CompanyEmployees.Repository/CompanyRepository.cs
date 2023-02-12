@@ -21,6 +21,12 @@ namespace CompanyEmployees.Repository
                 .ToList();
         }
 
+        public IEnumerable<Company> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges)
+        {
+            return FindByCondition(x => companyIds.Contains(x.Id), trackChanges)
+                .ToList();
+        }
+
         public Company? GetCompany(Guid companyId, bool trackChanges)
         {
             return FindByCondition(company => company.Id.Equals(companyId), trackChanges)

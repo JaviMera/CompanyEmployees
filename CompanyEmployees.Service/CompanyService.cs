@@ -29,11 +29,52 @@ namespace CompanyEmployees.Service
             return _mapper.Map<CompanyDto>(companyEntity);
         }
 
+        public (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection(IEnumerable<CompanyForCreationDto> companies)
+        {
+            if(companies is null)
+            {
+                throw new CompanyCollectionBadRequest();
+            }
+
+            var companyEntities = _mapper.Map<IEnumerable<Company>>(companies);
+
+            foreach(var company in companyEntities)
+            {
+                _repositoryManager.Company.CreateCompany(company);
+            }
+
+            _repositoryManager.Save();
+
+            var companiesToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+
+            var ids = string.Join(",", companiesToReturn.Select(c => c.Id));
+
+            return (companies: companiesToReturn, ids: ids);
+        }
+
         public IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges)
         {
             var companies = _repositoryManager.Company.GetAllCompanies(trackChanges);
             var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
             return companiesDto;                            
+        }
+
+        public IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges)
+        {
+            if(companyIds is null)
+            {
+                throw new IdParametersBadRequestException();
+            }
+
+            var companyEntities = _repositoryManager.Company.GetByIds(companyIds, trackChanges);
+
+            if(companyEntities.Count() != companyIds.Count()) {
+                throw new CollectionByIdsBadRequestException();
+            }
+
+            var companiesToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+
+            return companiesToReturn;
         }
 
         public CompanyDto? GetCompany(Guid companyId, bool trackChanges)
