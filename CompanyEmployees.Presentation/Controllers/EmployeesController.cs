@@ -35,7 +35,7 @@ namespace CompanyEmployees.Presentation.Controllers
         [HttpPost]
         public IActionResult CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto employee)
         {
-            if(employee is null)
+            if (employee is null)
             {
                 return BadRequest("EmployeeForCreationDto object is null.");
             }
@@ -43,6 +43,14 @@ namespace CompanyEmployees.Presentation.Controllers
             var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(companyId, employee, trackChanges: false);
 
             return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
+        }
+
+        [HttpDelete("{employeeId:guid}")]
+        public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid employeeId)
+        {
+            _service.EmployeeService.DeleteEmployeeForCompany(companyId, employeeId, false);
+
+            return NoContent();
         }
     }
 }
