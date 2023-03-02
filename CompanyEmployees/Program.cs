@@ -2,6 +2,8 @@ using CompanyEmployees.Contracts;
 using CompanyEmployees.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddControllers(config =>
 {
     config.RespectBrowserAcceptHeader= true;
-    config.ReturnHttpNotAcceptable = true;    
+    config.ReturnHttpNotAcceptable = true;
+    config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
 })
 .AddXmlDataContractSerializerFormatters()
 .AddCustomCsvFormatter()
@@ -58,3 +61,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()
+{
+    var builder = new ServiceCollection()
+        .AddLogging()
+        .AddMvc()
+        .AddNewtonsoftJson()
+        .Services.BuildServiceProvider();
+
+    return builder
+        .GetRequiredService<IOptions<MvcOptions>>()
+        .Value
+        .InputFormatters
+        .OfType<NewtonsoftJsonPatchInputFormatter>()
+        .First();
+}

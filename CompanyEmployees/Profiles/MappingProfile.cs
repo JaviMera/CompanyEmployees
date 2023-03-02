@@ -15,9 +15,13 @@ namespace CompanyEmployees.Profiles
             CreateMap<Employee, EmployeeDto>();
 
             CreateMap<CompanyForCreationDto, Company>();
-            CreateMap<EmployeeForCreationDto, Employee>();
+            CreateMap<EmployeeForCreationDto, Employee>()
+                .ReverseMap();
 
-            CreateMap<EmployeeForUpdateDto, Employee>();
+            CreateMap<EmployeeForUpdateDto, Employee>()
+                .ReverseMap();
+
+            CreateMap<CompanyForUpdateDto, Company>();
         }
     }
 }
